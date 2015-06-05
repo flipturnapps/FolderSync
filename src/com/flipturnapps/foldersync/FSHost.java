@@ -17,7 +17,7 @@ import com.flipturnapps.kevinLibrary.helper.ThreadHelper;
 
 public class FSHost implements Runnable
 {
-	private static final int PORT = 23456;
+	static final int PORT = 23456;
 	private File startDir;
 	private FolderSyncOutput out;
 	private ArrayList<File> fileList;
