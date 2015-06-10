@@ -8,18 +8,22 @@ public class NewMain
 {
 	public static void main (String[] args)
 	{
-		if(args[0].split(".").length == 4)
+		int count = args[0].replace(".", "~").split("~").length;
+		System.out.println(count);
+		if(count == 4)
 		{
+			System.out.println("client");
 			new NewMain().client(args[0]);
 		}
 		else
 		{
+			System.out.println("server");
 			new NewMain().server(args[0]);
 		}
 	}
 	private void server(String args) 
 	{
-		Runnable run = new FSHost(new SimpleFolderSyncOutput(),new File(getStartDir().getAbsolutePath() + "/" + args + "/"),Long.MAX_VALUE,1);
+		Runnable run = new FSHost(new SimpleFolderSyncOutput(),new File(getStartDir().getAbsolutePath() + "/" + args + "/"),50000,1);
 		Thread t = new Thread(run);
 		t.start();
 	}

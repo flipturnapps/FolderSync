@@ -11,13 +11,14 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 
 import com.flipturnapps.kevinLibrary.helper.ThreadHelper;
 
 public class FSHost implements Runnable
 {
-	static final int PORT = 23456;
+	static final int PORT = 12345;
 	private File startDir;
 	private FolderSyncOutput out;
 	private ArrayList<File> fileList;
@@ -75,13 +76,14 @@ public class FSHost implements Runnable
 		this.out.textOutput("Starting serverside.");
 		FSServerSocket server = null;
 		try {
-			server = new FSServerSocket(this.port);
+			server = new FSServerSocket();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		if (server != null)
 			this.out.textOutput("Server started on port " + this.port + " successfully.");
 		this.out.textOutput("Starting accepting phase. Will end if time exceeds " + this.waitTime / 1000L + " seconds or if " + this.maxClients + " # of clients has been reached.");
+		ThreadHelper.sleep(1000);
 		this.acceptorDone = false;
 		Thread acceptorThread = new Thread(new Acceptor(server));
 		acceptorThread.start();
@@ -292,13 +294,18 @@ public class FSHost implements Runnable
 		}
 
 		public void run() {
-			for (int i = 0; i < FSHost.this.maxClients; i++) {
+			for (int i = 0; i < FSHost.this.maxClients; i++) 
+			{
 				try
 				{
 					this.server.accept();
 				}
-				catch (IOException e) {
+				catch (IOException e) 
+				{
 					e.printStackTrace();
+					System.out.println("whyyyyyy");
+					i--;
+					ThreadHelper.sleep(500);
 				}
 			}
 			FSHost.this.acceptorDone = true;
@@ -307,13 +314,13 @@ public class FSHost implements Runnable
 
 	private class FSServerSocket extends ServerSocket
 	{
-		private int port;
+		
 		private ArrayList<FSHost.Client> clients;
 
-		public FSServerSocket(int port) throws IOException
+		public FSServerSocket() throws IOException
 		{
-			super();
-			this.port = port;
+			super(PORT);
+			
 			this.clients = new ArrayList<FSHost.Client>();			       
 		}
 
@@ -322,10 +329,7 @@ public class FSHost implements Runnable
 			return this.clients;
 		}
 
-		public int getPort() 
-		{
-			return this.port;
-		}
+		
 
 		public Socket accept() throws IOException 
 		{
