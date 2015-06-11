@@ -38,7 +38,7 @@ public class NewMain
 	}
 	private void server(String args) 
 	{
-		Runnable run = new FSHost(new SimpleFolderSyncOutput(),new File(getStartDir().getAbsolutePath() + "/" + args + "/"),Long.MAX_VALUE,1);
+		Runnable run = new FSHost(new SimpleFolderSyncOutput(),new File(args + "/"),Long.MAX_VALUE,1);
 		Thread t = new Thread(run);
 		t.start();
 	}
