@@ -3,13 +3,28 @@ package com.flipturnapps.foldersync;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class NewMain
 {
+	
+	public static File dir;
 	public static void main (String[] args)
 	{
 		int count = args[0].replace(".", "~").split("~").length;
 		System.out.println(count);
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Pls write a directory: ");
+		String path = scan.nextLine();
+		dir = new File(path);
+		boolean exists = dir.exists();
+		boolean directory = dir.isDirectory();
+		if(!exists || !directory)
+		{
+			System.out.println("Invalid!");
+			System.exit(-1);
+		}
+		scan.close();
 		if(count == 4)
 		{
 			System.out.println("client");
@@ -18,12 +33,12 @@ public class NewMain
 		else
 		{
 			System.out.println("server");
-			new NewMain().server(args[0]);
+			new NewMain().server(dir.getAbsolutePath());
 		}
 	}
 	private void server(String args) 
 	{
-		Runnable run = new FSHost(new SimpleFolderSyncOutput(),new File(getStartDir().getAbsolutePath() + "/" + args + "/"),50000,1);
+		Runnable run = new FSHost(new SimpleFolderSyncOutput(),new File(getStartDir().getAbsolutePath() + "/" + args + "/"),Long.MAX_VALUE,1);
 		Thread t = new Thread(run);
 		t.start();
 	}
