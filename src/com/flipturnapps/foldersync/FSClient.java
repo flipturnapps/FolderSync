@@ -56,7 +56,7 @@ public class FSClient extends Socket implements Runnable
 		this.out.textOutput("Parsing FNS.");
 		for (int i = 0; i < fileNamesSplit.length; i++)
 		{
-			fileNames[i] = NewMain.dir.getAbsolutePath() + fileNamesSplit[i];
+			fileNames[i] = NewMain.dir.getAbsolutePath() +"/"+ fileNamesSplit[i];
 			this.out.textOutput(" -FNS- " + fileNames[i]);
 		}
 
