@@ -128,12 +128,13 @@ public class FSHost implements Runnable
 
 
 
-		this.out.textOutput("Starting file transfer");
+	
 		ArrayList<File> files = new ArrayList<File>();
 		for (int i = 0; i < this.fileList.size(); i++)
 		{
 			files.add(this.fileList.get(i));
 		}
+		this.out.textOutput("Starting file transfer with " + files.size() + " files.");
 
 		int fileNum = -1;
 		int bytesTransfered = 0;
@@ -143,21 +144,25 @@ public class FSHost implements Runnable
 		int val = -1;
 		boolean init = false;
 		File f = null;
-		do
+		while (true)
 		{
 			if (val == -1)
 			{
-				if (init) {
+				ThreadHelper.sleep(500);
+				if (init)
+				{
 					try
 					{
 						fis.close();
 					}
-					catch (IOException e1) {
-						/* 153 */             e1.printStackTrace();
+					catch (IOException e1) 
+					{
+						  e1.printStackTrace();
 					}
 				}
 
-				if (files.size() <= 0) {
+				if (files.size() <= 0) 
+				{
 					break;
 				}
 				f = files.remove(0);
@@ -166,19 +171,14 @@ public class FSHost implements Runnable
 					fis = new FileInputStream(f);
 					fiss.add(fis);
 				}
-				catch (FileNotFoundException e) {
+				catch (FileNotFoundException e) 
+				{
 					e.printStackTrace();
 				}
 				fileNum++;
 				this.out.textOutput("FIS has been set to file \"" + getClientPath(f) + "\"");
 				init = true;
 			}
-
-
-
-
-
-
 			try
 			{
 				val = fis.read(buffer, 0, buffer.length);
@@ -198,9 +198,10 @@ public class FSHost implements Runnable
 			}
 			bytesTransfered += val;
 			this.out.progress((bytesTransfered + 0.0D) / (this.totalBytes + 0.0D));
-		} 
-		while (val != -1);
+		}
+		
 
+		/*
 		for (;;)
 		{
 			this.out.textOutput("WAITING FOR CLIENT ACKS!");
@@ -225,6 +226,7 @@ public class FSHost implements Runnable
 		catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
+		*/
 
 
 		this.out.textOutput("Finished transfer.  Closing phase. All closing errors will be printed to the console.");

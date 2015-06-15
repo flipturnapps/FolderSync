@@ -1,13 +1,16 @@
 package com.flipturnapps.foldersync;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+import com.flipturnapps.kevinLibrary.helper.FileHelper;
 import com.flipturnapps.kevinLibrary.helper.JFrameHelper;
+import com.flipturnapps.kevinLibrary.helper.TextFileHelper;
 
 public class NewMain
 {
@@ -25,10 +28,20 @@ public class NewMain
 		{
 
 		}
-	
+		File storeDir = new File( FileHelper.getAppDataDir("flipturnapps", "FolderSync"));
+		storeDir.mkdirs();
+		File store = new File(storeDir.getAbsolutePath() + "/" + "startup.cfg");
+		File startDir = null;
+		try {
+			startDir = new File(TextFileHelper.getFirstTextLine(store));
+		} catch (IOException e1) 
+		{
+			e1.printStackTrace();
+		}
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setMultiSelectionEnabled(false);
+		chooser.setSelectedFile(startDir);
 		int returnVal = chooser.showOpenDialog(null);
 		if(returnVal == JFileChooser.APPROVE_OPTION) 
 		{
@@ -37,6 +50,8 @@ public class NewMain
 		}
 
 		dir = chooser.getSelectedFile();
+
+
 		boolean exists = dir.exists();
 		boolean directory = dir.isDirectory();
 		if(!exists || !directory)
@@ -44,8 +59,21 @@ public class NewMain
 			System.out.println("Invalid!");
 			System.exit(-1);
 		}
-		
 
+		
+		try {
+			store.createNewFile();
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		try {
+			TextFileHelper.writeTextToFile(store, dir.getAbsolutePath());
+		} catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		
 		if(count == 4)
 		{
 			System.out.println("client");
@@ -69,11 +97,11 @@ public class NewMain
 		Runnable run = null;
 		try {
 			run = new FSClient(args,FSHost.PORT,new SimpleFolderSyncOutput());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
+		} catch (UnknownHostException e)
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 		Thread t = new Thread(run);

@@ -82,7 +82,8 @@ public class FSClient extends Socket implements Runnable
 		{
 			if ((!init) || (bytesTransfered == byteCountEndings[fileSel]))
 			{
-				if (init) {
+				if (init) 
+				{
 					try
 					{
 						fos.close();
