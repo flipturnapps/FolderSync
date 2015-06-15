@@ -148,7 +148,7 @@ public class FSHost implements Runnable
 		{
 			if (val == -1)
 			{
-				ThreadHelper.sleep(500);
+				ThreadHelper.sleep(100);
 				if (init)
 				{
 					try
@@ -339,6 +339,14 @@ public class FSHost implements Runnable
 
 			this.clients.add(new FSHost.Client(s));
 			return s;
+		}
+		public void close() throws IOException
+		{
+			super.close();
+			for(int i = 0; i < clients.size(); i++)
+			{
+				clients.get(i).endReading = true;
+			}
 		}
 	}
 
