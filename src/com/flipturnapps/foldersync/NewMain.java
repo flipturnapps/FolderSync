@@ -3,20 +3,40 @@ package com.flipturnapps.foldersync;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+
+import com.flipturnapps.kevinLibrary.helper.JFrameHelper;
 
 public class NewMain
 {
-	
+
 	public static File dir;
 	public static void main (String[] args)
 	{
-		int count = args[0].replace(".", "~").split("~").length;
-		System.out.println(count);
-		Scanner scan = new Scanner(System.in);
-		System.out.print("Pls write a directory: ");
-		String path = scan.nextLine();
-		dir = new File(path);
+		int count = -1;
+		try
+		{
+			count = args[0].replace(".", "~").split("~").length;
+			System.out.println(count);
+		}
+		catch(Exception ex)
+		{
+
+		}
+	
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setMultiSelectionEnabled(false);
+		int returnVal = chooser.showOpenDialog(null);
+		if(returnVal == JFileChooser.APPROVE_OPTION) 
+		{
+			System.out.println("You chose to open this file: " +
+					chooser.getSelectedFile().getName());
+		}
+
+		dir = chooser.getSelectedFile();
 		boolean exists = dir.exists();
 		boolean directory = dir.isDirectory();
 		if(!exists || !directory)
@@ -24,7 +44,8 @@ public class NewMain
 			System.out.println("Invalid!");
 			System.exit(-1);
 		}
-		scan.close();
+		
+
 		if(count == 4)
 		{
 			System.out.println("client");
@@ -35,10 +56,11 @@ public class NewMain
 			System.out.println("server");
 			new NewMain().server(dir.getAbsolutePath());
 		}
+
 	}
 	private void server(String args) 
 	{
-		Runnable run = new FSHost(new SimpleFolderSyncOutput(),new File(args + "/"),Long.MAX_VALUE,1);
+		Runnable run = new FSHost(new SimpleFolderSyncOutput(),new File(args),Long.MAX_VALUE,1);
 		Thread t = new Thread(run);
 		t.start();
 	}
