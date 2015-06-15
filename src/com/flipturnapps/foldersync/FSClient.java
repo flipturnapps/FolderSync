@@ -35,29 +35,29 @@ public class FSClient extends Socket implements Runnable
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.out.textOutput("Read info.  Info:");
-		this.out.textOutput(" -INF- ByteCountString: " + byteCountString);
-		this.out.textOutput(" -INF- FileNamesString: " + fileNamesString);
-		this.out.textOutput("Attempting to parse info.");
+		//this.out.textOutput("Read info.  Info:");
+		//this.out.textOutput(" -INF- ByteCountString: " + byteCountString);
+		//this.out.textOutput(" -INF- FileNamesString: " + fileNamesString);
+		//this.out.textOutput("Attempting to parse info.");
 
 
 		String[] byteCountSplit = byteCountString.split("~");
 		long[] byteCountEndings = new long[byteCountSplit.length];
-		this.out.textOutput("Parsing BCS.");
+		//this.out.textOutput("Parsing BCS.");
 		for (int i = 0; i < byteCountSplit.length; i++)
 		{
 			byteCountEndings[i] = Long.parseLong(byteCountSplit[i]);
-			this.out.textOutput(" -BCE- " + byteCountEndings[i]);
+			//this.out.textOutput(" -BCE- " + byteCountEndings[i]);
 		}
 
 
 		String[] fileNamesSplit = fileNamesString.split("~");
 		String[] fileNames = new String[fileNamesSplit.length];
-		this.out.textOutput("Parsing FNS.");
+		//this.out.textOutput("Parsing FNS.");
 		for (int i = 0; i < fileNamesSplit.length; i++)
 		{
 			fileNames[i] = NewMain.dir.getAbsolutePath() +"/"+ fileNamesSplit[i];
-			this.out.textOutput(" -FNS- " + fileNames[i]);
+			//this.out.textOutput(" -FNS- " + fileNames[i]);
 		}
 
 
@@ -113,7 +113,7 @@ public class FSClient extends Socket implements Runnable
 				catch (IOException e) {
 					e.printStackTrace();
 				}
-				this.out.textOutput("FOS has been set to file \"" + f.getAbsolutePath() + "\"");
+				//this.out.textOutput("FOS has been set to file \"" + f.getAbsolutePath() + "\"");
 				init = true;
 			}
 			try

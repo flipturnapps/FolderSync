@@ -29,7 +29,7 @@ public class FSHost implements Runnable
 	private int maxClients;
 	private int port;
 	private boolean acceptorDone = false;
-
+	
 
 	public FSHost(FolderSyncOutput output, File startDir, long waitTime, int maxClients)
 	{
@@ -51,7 +51,20 @@ public class FSHost implements Runnable
 			this.totalBytes += this.fileList.get(i).length();
 		}
 		this.out.textOutput("Total size: " + this.totalBytes + " bytes.");
-		this.out.textOutput("Byte count endings: ");
+		String[] labels = new String[] {"bytes","KB","MB","GB","TB"};
+		double num = (this.totalBytes+0.0) /1000.0;
+		int count = 0;
+		while(true)
+		{
+		num /= 1024;
+		count++;
+		if(num < 800)
+			break;
+		}
+		
+		String userSizeString = String.format("Total size: %.2f%s", num, labels[count]);
+		this.out.textOutput(userSizeString);
+		//this.out.textOutput("Byte count endings: ");
 		this.byteCountEndings = new long[this.fileList.size()];
 		for (int i = 0; i < this.byteCountEndings.length; i++)
 		{
@@ -59,14 +72,14 @@ public class FSHost implements Runnable
 				this.byteCountEndings[i] = this.fileList.get(i).length();
 			} else
 				this.byteCountEndings[i] = (this.fileList.get(i).length() + this.byteCountEndings[(i - 1)]);
-			this.out.textOutput(" -BCE- " + this.byteCountEndings[i]);
+			//this.out.textOutput(" -BCE- " + this.byteCountEndings[i]);
 		}
-		this.out.textOutput("Relative file paths: ");
+		//this.out.textOutput("Relative file paths: ");
 		this.paths = new String[this.fileList.size()];
 		for (int i = 0; i < this.paths.length; i++)
 		{
 			this.paths[i] = getClientPath(this.fileList.get(i));
-			this.out.textOutput(" -RFP- " + this.paths[i]);
+			//this.out.textOutput(" -RFP- " + this.paths[i]);
 		}
 		this.out.textOutput("Initialization complete.");
 		this.out.textOutput("");
@@ -115,9 +128,9 @@ public class FSHost implements Runnable
 		}
 		byteCountsString = byteCountsString.substring(0, byteCountsString.length() - 1);
 		fileString = fileString.substring(0, fileString.length() - 1);
-		this.out.textOutput("Info to send to clients: ");
-		this.out.textOutput(" -INF- " + byteCountsString);
-		this.out.textOutput(" -INF- " + fileString);
+		//this.out.textOutput("Info to send to clients: ");
+		//this.out.textOutput(" -INF- " + byteCountsString);
+		//this.out.textOutput(" -INF- " + fileString);
 		for (int i = 0; i < server.getClients().size(); i++)
 		{
 			(server.getClients().get(i)).textWriter.println(byteCountsString);
@@ -176,7 +189,7 @@ public class FSHost implements Runnable
 					e.printStackTrace();
 				}
 				fileNum++;
-				this.out.textOutput("FIS has been set to file \"" + getClientPath(f) + "\"");
+				//this.out.textOutput("FIS has been set to file \"" + getClientPath(f) + "\"");
 				init = true;
 			}
 			try
@@ -229,8 +242,8 @@ public class FSHost implements Runnable
 		*/
 
 
-		this.out.textOutput("Finished transfer.  Closing phase. All closing errors will be printed to the console.");
-		this.out.textOutput("Starting closing client output streams.");
+		//this.out.textOutput("Finished transfer.  Closing phase. All closing errors will be printed to the console.");
+		//this.out.textOutput("Starting closing client output streams.");
 		for (int i = 0; i < server.getClients().size(); i++)
 		{
 			Client c = server.getClients().get(i);
@@ -242,7 +255,7 @@ public class FSHost implements Runnable
 			}
 		}
 
-		this.out.textOutput("Starting closing client input streams.");
+		//this.out.textOutput("Starting closing client input streams.");
 		for (int i = 0; i < server.getClients().size(); i++)
 		{
 			Client c = server.getClients().get(i);
@@ -254,7 +267,7 @@ public class FSHost implements Runnable
 			}
 		}
 
-		this.out.textOutput("Starting closing client sockets.");
+		//this.out.textOutput("Starting closing client sockets.");
 		for (int i = 0; i < server.getClients().size(); i++)
 		{
 			Client c = server.getClients().get(i);
@@ -265,7 +278,7 @@ public class FSHost implements Runnable
 				e.printStackTrace();
 			}
 		}
-		this.out.textOutput("Closing server.");
+		//this.out.textOutput("Closing server.");
 		try 
 		{
 
