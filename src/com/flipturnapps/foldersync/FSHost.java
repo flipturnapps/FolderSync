@@ -29,7 +29,7 @@ public class FSHost implements Runnable
 	private int maxClients;
 	private int port;
 	private boolean acceptorDone = false;
-	
+
 
 	public FSHost(FolderSyncOutput output, File startDir, long waitTime, int maxClients)
 	{
@@ -56,12 +56,13 @@ public class FSHost implements Runnable
 		int count = 0;
 		while(true)
 		{
-		num /= 1024;
-		count++;
-		if(num < 800)
-			break;
+			if(num < 800)
+				break;
+			num /= 1024;
+			count++;
+
 		}
-		
+
 		String userSizeString = String.format("Total size: %.2f%s", num, labels[count]);
 		this.out.textOutput(userSizeString);
 		//this.out.textOutput("Byte count endings: ");
@@ -141,7 +142,7 @@ public class FSHost implements Runnable
 
 
 
-	
+
 		ArrayList<File> files = new ArrayList<File>();
 		for (int i = 0; i < this.fileList.size(); i++)
 		{
@@ -170,7 +171,7 @@ public class FSHost implements Runnable
 					}
 					catch (IOException e1) 
 					{
-						  e1.printStackTrace();
+						e1.printStackTrace();
 					}
 				}
 
@@ -212,7 +213,7 @@ public class FSHost implements Runnable
 			bytesTransfered += val;
 			this.out.progress((bytesTransfered + 0.0D) / (this.totalBytes + 0.0D));
 		}
-		
+
 
 		/*
 		for (;;)
@@ -239,7 +240,7 @@ public class FSHost implements Runnable
 		catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		*/
+		 */
 
 
 		//this.out.textOutput("Finished transfer.  Closing phase. All closing errors will be printed to the console.");
@@ -329,13 +330,13 @@ public class FSHost implements Runnable
 
 	private class FSServerSocket extends ServerSocket
 	{
-		
+
 		private ArrayList<FSHost.Client> clients;
 
 		public FSServerSocket() throws IOException
 		{
 			super(PORT);
-			
+
 			this.clients = new ArrayList<FSHost.Client>();			       
 		}
 
@@ -344,7 +345,7 @@ public class FSHost implements Runnable
 			return this.clients;
 		}
 
-		
+
 
 		public Socket accept() throws IOException 
 		{
