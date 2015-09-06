@@ -21,13 +21,15 @@ public class NewMain
 		int count = -1;
 		try
 		{
-			count = args[0].replace(".", "~").split("~").length;
+			count = args[1].replace(".", "~").split("~").length;
 			System.out.println(count);
 		}
 		catch(Exception ex)
 		{
 
 		}
+		if(args[0].equalsIgnoreCase("chooser"))
+		{
 		File storeDir = new File( FileHelper.getAppDataDir("flipturnapps", "FolderSync"));
 		storeDir.mkdirs();
 		File store = new File(storeDir.getAbsolutePath() + "/" + "startup.cfg");
@@ -50,7 +52,9 @@ public class NewMain
 		}
 
 		dir = chooser.getSelectedFile();
-
+		}
+		else
+			dir = new File(args[0]);
 
 		boolean exists = dir.exists();
 		boolean directory = dir.isDirectory();
@@ -77,7 +81,7 @@ public class NewMain
 		if(count == 4)
 		{
 			System.out.println("client");
-			new NewMain().client(args[0]);
+			new NewMain().client(args[1]);
 		}
 		else
 		{
