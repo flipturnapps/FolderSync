@@ -28,30 +28,31 @@ public class NewMain
 		{
 
 		}
-		if(args[0].equalsIgnoreCase("chooser"))
-		{
 		File storeDir = new File( FileHelper.getAppDataDir("flipturnapps", "FolderSync"));
 		storeDir.mkdirs();
 		File store = new File(storeDir.getAbsolutePath() + "/" + "startup.cfg");
 		File startDir = null;
-		try {
-			startDir = new File(TextFileHelper.getFirstTextLine(store));
-		} catch (IOException e1) 
+		if(args[0].equalsIgnoreCase("chooser"))
 		{
-			e1.printStackTrace();
-		}
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setMultiSelectionEnabled(false);
-		chooser.setSelectedFile(startDir);
-		int returnVal = chooser.showOpenDialog(null);
-		if(returnVal == JFileChooser.APPROVE_OPTION) 
-		{
-			System.out.println("You chose to open this file: " +
-					chooser.getSelectedFile().getName());
-		}
 
-		dir = chooser.getSelectedFile();
+			try {
+				startDir = new File(TextFileHelper.getFirstTextLine(store));
+			} catch (IOException e1) 
+			{
+				e1.printStackTrace();
+			}
+			JFileChooser chooser = new JFileChooser();
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			chooser.setMultiSelectionEnabled(false);
+			chooser.setSelectedFile(startDir);
+			int returnVal = chooser.showOpenDialog(null);
+			if(returnVal == JFileChooser.APPROVE_OPTION) 
+			{
+				System.out.println("You chose to open this file: " +
+						chooser.getSelectedFile().getName());
+			}
+
+			dir = chooser.getSelectedFile();
 		}
 		else
 			dir = new File(args[0]);
@@ -64,7 +65,7 @@ public class NewMain
 			System.exit(-1);
 		}
 
-		
+
 		try {
 			store.createNewFile();
 		} catch (IOException e) 
@@ -77,7 +78,7 @@ public class NewMain
 		{
 			e.printStackTrace();
 		}
-		
+
 		if(count == 4)
 		{
 			System.out.println("client");
