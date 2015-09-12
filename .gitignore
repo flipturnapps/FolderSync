@@ -1,5 +1,5 @@
 /bin/
 /src/com/fliturnapps/kevinLibrary/*
 .classpath
-.settings
-/.project/
+/.settings/
+.project
