@@ -1,5 +1,0 @@
-package com.flipturnapps.kevinLibrary.sprite;
-
-public enum GStartPoints
-	{TOPLEFT,TOPRIGHT,TOPCENTER,BOTTOMLEFT,BOTTOMRIGHT,BOTTOMCENTER,LEFTCENTER,RIGHTCENTER};
-
